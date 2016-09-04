@@ -78,6 +78,13 @@ Vagrant.configure(2) do |config|
   config.vm.define 'WEB-SERVER' do |web|
     web.vm.hostname = 'my-project.com'
     web.vm.network :private_network, ip: '192.168.33.10'
+    web.vm.network "forwarded_port", guest: 80, host: 80
     web.vm.synced_folder "/Users/experimentos/my-project-host", "/home/vagrant/my-project-guest", :owner=> 'www-data', :group=>'www-data'
+  end
+
+  config.vm.define 'DB-SERVER' do |db|
+    db.vm.hostname = 'my-project-db.com'
+    db.vm.network "forwarded_port", guest: 5432, host: 5432
+    db.vm.network :private_network, ip: '192.168.33.11'
   end
 end
